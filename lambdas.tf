@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "stepFunctionSampleLambdaIAM"
+  name = "lambdaIAM"
 
   assume_role_policy = <<EOF
 {

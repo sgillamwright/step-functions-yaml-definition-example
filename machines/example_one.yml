@@ -1,8 +1,8 @@
-Comment: An example of the Amazon States Language using a choice state.
+Comment: An example template written in YAML
 StartAt: RandomNumberConfig
 States:
   RandomNumberConfig:
-    Comment: To configure the random-number-generator-lambda.
+    Comment: Configure the RandomNumberLambda
     Next: RandomNumberLambda
     Result:
       max: 10
@@ -22,10 +22,10 @@ States:
     - Next: EndState
       NumericLessThan: 5
       Variable: $
-    Comment: A choice state to decide to end for <5 or trigger power of three lambda for >5.
+    Comment: Do a power of 3, or end the state machine execution
     Type: Choice
   PowerLambda:
-    Comment: Increase the input to power of 3 with customized input.
+    Comment: Increase the input to power of 3
     End: true
     Parameters:
       base.$: $

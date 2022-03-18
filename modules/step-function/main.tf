@@ -1,5 +1,5 @@
 // Create state machine for step function
-resource "aws_sfn_state_machine" "sfn_state_machine" {
+resource "aws_sfn_state_machine" "state_machine" {
   name     = var.state_machine_name
   role_arn = var.state_machine_iam_role_arn
 

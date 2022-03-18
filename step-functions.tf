@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_step_functions" {
-  name = "stepFunctionSampleStepFunctionExecutionIAM"
+  name = "stepFunctionExecutionRole"
 
   assume_role_policy = <<EOF
 {
@@ -18,14 +18,13 @@ EOF
 }
 
 resource "aws_iam_policy" "policy_invoke_lambda" {
-  name = "stepFunctionSampleLambdaFunctionInvocationPolicy"
+  name = "lambdaInvokePolicy"
 
   policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
                 "lambda:InvokeFunction",
@@ -47,7 +46,7 @@ resource "aws_iam_role_policy_attachment" "iam_for_step_function_attach_policy_i
 module "example_one_step" {
   source = "./modules/step-function"
 
-  state_machine_name         = "shawns-test-terraform-state-machine"
+  state_machine_name         = "test-terraform-state-machine"
   state_machine_iam_role_arn = aws_iam_role.iam_for_step_functions.arn
   state_machine_definition = templatefile("./machines/example_one.yml", {
     power_lambda_arn  = module.power_lambda.lambda_arn,
