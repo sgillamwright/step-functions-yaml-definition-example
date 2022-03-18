@@ -1,0 +1,38 @@
+Comment: An example of the Amazon States Language using a choice state.
+StartAt: RandomNumberConfig
+States:
+  RandomNumberConfig:
+    Comment: To configure the random-number-generator-lambda.
+    Next: RandomNumberLambda
+    Result:
+      max: 10
+      min: 1
+    ResultPath: $
+    Type: Pass
+  RandomNumberLambda:
+    Comment: Generate a number based on input.
+    Next: ChooseNext
+    Resource: ${random_lambda_arn}
+    Type: Task
+  ChooseNext:
+    Choices:
+    - Next: PowerLambda
+      NumericGreaterThanEquals: 5
+      Variable: $
+    - Next: EndState
+      NumericLessThan: 5
+      Variable: $
+    Comment: A choice state to decide to end for <5 or trigger power of three lambda for >5.
+    Type: Choice
+  PowerLambda:
+    Comment: Increase the input to power of 3 with customized input.
+    End: true
+    Parameters:
+      base.$: $
+      exponent: 3
+    Resource: ${power_lambda_arn}
+    Type: Task
+  EndState:
+    Comment: EndState
+    End: true
+    Type: Pass
